@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Replace with your live GitHub Pages URL (or custom domain) after deployment.
+Sitemap: https://riviledu.github.io/sitemap.xml

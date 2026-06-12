@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success Stories | Rivil International Education Consultants</title>
+  <meta name="description" content="Read what Sri Lankan students say about studying abroad with Rivil International's free guidance — placements in New Zealand, the UK, Australia and beyond.">
+  <link rel="icon" type="image/png" href="Rivil_Main_logo-removebg-preview.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pine: { 50:'#f0f7f4', 100:'#dcebe4', 200:'#bcd7cb', 300:'#8fbcaa', 400:'#56987f', 500:'#377a63', 600:'#27614e', 700:'#1f4e40', 800:'#1a4036', 900:'#16352d', 950:'#0b201b' },
+            gold: { 300:'#f7d878', 400:'#eeb52e', 500:'#d99c18', 600:'#b97c10', 700:'#955d12' },
+            cream: '#faf7f1'
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="mobile.css">
+  <script src="rivil-data.js"></script>
+  <script src="rivil-app.js"></script>
+</head>
+<body class="bg-cream font-sans text-pine-950 antialiased">
+
+  <div id="navbar"></div>
+
+  <!-- Page hero -->
+  <section class="relative isolate overflow-hidden bg-pine-950">
+    <div class="absolute inset-0 -z-10">
+      <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1800&q=80" alt="Graduates celebrating" class="h-full w-full object-cover opacity-25">
+      <div class="absolute inset-0 bg-gradient-to-b from-pine-950/60 via-pine-950/80 to-pine-950"></div>
+    </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <p class="hero-rise hero-rise-1 text-sm font-bold uppercase tracking-[0.2em] text-gold-400">Success stories</p>
+      <h1 class="hero-rise hero-rise-2 mt-4 max-w-3xl font-display text-4xl sm:text-6xl font-semibold leading-[1.08] text-white">They dreamt it. They&rsquo;re living it.</h1>
+      <p class="hero-rise hero-rise-3 mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-cream/75">Real words from Sri Lankan students who are now studying abroad &mdash; guided by Rivil, completely free of charge.</p>
+    </div>
+  </section>
+
+  <!-- All testimonials -->
+  <section class="py-20 sm:py-28">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div id="testimonial-cards" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="pb-20 sm:pb-28">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="scroll-reveal relative overflow-hidden rounded-3xl bg-pine-900 px-6 py-14 sm:px-14 sm:py-20 text-center">
+        <div class="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-gold-400/10 blur-2xl"></div>
+        <h2 class="relative font-display text-3xl sm:text-5xl font-semibold leading-tight text-white">Your story could be next</h2>
+        <p class="relative mx-auto mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-cream/70">Every student on this page started with a single enquiry. Send yours today &mdash; it costs nothing.</p>
+        <div class="relative mt-9 flex flex-col sm:flex-row justify-center gap-4">
+          <a href="contact.html" class="inline-flex items-center justify-center gap-2 rounded-full bg-gold-400 px-8 py-4 text-sm font-bold text-pine-950 hover:bg-gold-300 transition-colors">Start Your Journey</a>
+          <a id="cta-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/25 px-8 py-4 text-sm font-semibold text-white hover:bg-white hover:text-pine-950 transition-colors">Chat on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      initNavbar();
+      initFooter();
+      var msg = 'Hi, I would like to begin my own study abroad journey. Please contact me.';
+      initWhatsApp(msg);
+      renderTestimonialCards('testimonial-cards');
+      initScrollAnimations();
+      document.getElementById('cta-whatsapp').href = RIVIL.waLink(msg);
+    });
+  </script>
+</body>
+</html>

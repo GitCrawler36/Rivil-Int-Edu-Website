@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Rivil International — custom animations & overrides
+   ========================================================================== */
+
+/* ---------- Scroll reveal (driven by initScrollAnimations) ---------- */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- WhatsApp button pulse ring ---------- */
+
+@keyframes wa-pulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  70%  { transform: scale(1.65); opacity: 0; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+
+.wa-pulse-ring {
+  animation: wa-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ---------- Hero entrance ---------- */
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-rise   { animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-rise-1 { animation-delay: 0.08s; }
+.hero-rise-2 { animation-delay: 0.22s; }
+.hero-rise-3 { animation-delay: 0.38s; }
+.hero-rise-4 { animation-delay: 0.54s; }
+
+/* Slow, subtle Ken Burns drift on hero photography */
+@keyframes hero-drift {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+
+.hero-drift {
+  animation: hero-drift 18s ease-out both;
+}
+
+/* ---------- Decorative underline stroke for headline accents ---------- */
+
+.accent-underline {
+  background-image: linear-gradient(120deg, rgba(238, 181, 46, 0.55), rgba(238, 181, 46, 0.55));
+  background-repeat: no-repeat;
+  background-size: 100% 0.32em;
+  background-position: 0 88%;
+}
+
+/* ---------- Smooth scrolling & typography polish ---------- */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background-color: #eeb52e;
+  color: #071f1b;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .wa-pulse-ring,
+  .hero-rise,
+  .hero-rise-1,
+  .hero-rise-2,
+  .hero-rise-3,
+  .hero-rise-4,
+  .hero-drift {
+    animation: none;
+  }
+
+  .hero-rise { opacity: 1; transform: none; }
+}
+
+/* ---------- Small-screen refinements ---------- */
+
+@media (max-width: 640px) {
+  /* Keep the floating WhatsApp button clear of iOS home indicator */
+  .fixed.bottom-5 {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  }
+}
