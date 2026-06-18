@@ -32,6 +32,25 @@
     'singapore': 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&q=80'
   };
 
+  /* Full-bleed landscape hero photos (1920px) used on the destination pages. */
+  var HERO_IMAGES = {
+    'new-zealand': 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1920&q=85',
+    'australia': 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1920&q=85',
+    'uk': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1920&q=85',
+    'canada': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85',
+    'malaysia': 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1920&q=85',
+    'singapore': 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1920&q=85'
+  };
+
+  var FLAG_EMOJIS = {
+    'new-zealand': '🇳🇿',
+    'uk': '🇬🇧',
+    'australia': '🇦🇺',
+    'canada': '🇨🇦',
+    'malaysia': '🇲🇾',
+    'singapore': '🇸🇬'
+  };
+
   var WHATSAPP_ICON = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z';
 
   /* ---------- Helpers ---------- */
@@ -70,15 +89,7 @@
 
     var page = currentPage();
     var destinations = window.RIVIL_DATA.destinations;
-    var onDestPage = destinations.some(function (d) { return d.page === page; });
-
-    var links = [
-      { label: 'Home', href: 'index.html' },
-      { label: 'About', href: 'about.html' },
-      { label: 'How It Works', href: 'how-it-works.html' },
-      { label: 'Success Stories', href: 'success-stories.html' },
-      { label: 'Events', href: 'events.html' }
-    ];
+    var onDestPage = destinations.some(function (d) { return d.page === page; }) || page === 'destinations-other.html';
 
     function linkCls(href) {
       return href === page
@@ -86,39 +97,53 @@
         : 'text-pine-950/70 hover:text-pine-800 font-medium';
     }
 
+    function mobileLinkCls(href) {
+      return href === page
+        ? 'bg-pine-50 text-pine-800 font-semibold'
+        : 'text-pine-950/80 hover:bg-pine-50 font-medium';
+    }
+
+    var megaMenuItems = destinations.map(function (d) {
+      var flag = FLAG_EMOJIS[d.slug] || '🌍';
+      var active = d.page === page;
+      return '<a href="' + d.page + '" class="group flex items-start gap-3 rounded-xl p-3.5 transition-colors ' + (active ? 'bg-pine-50' : 'hover:bg-pine-50') + '">' +
+        '<span class="shrink-0 mt-0.5 text-[1.6rem] leading-none">' + flag + '</span>' +
+        '<span class="min-w-0">' +
+          '<span class="block text-sm font-semibold text-pine-950 group-hover:text-pine-800">' + d.name + '</span>' +
+          '<span class="block text-xs text-pine-950/55 leading-snug mt-0.5 line-clamp-2">' + d.tagline + '</span>' +
+        '</span>' +
+      '</a>';
+    }).join('');
+
     var desktopLinks =
       '<a href="index.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('index.html') + '">Home</a>' +
       '<a href="about.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('about.html') + '">About</a>' +
-      // Destinations dropdown (JS click-toggled)
       '<div class="relative" id="nav-dd-wrap">' +
         '<button id="nav-dd-btn" type="button" aria-expanded="false" class="flex items-center gap-1 px-3 py-2 text-sm transition-colors ' + (onDestPage ? 'text-pine-800 font-semibold' : 'text-pine-950/70 hover:text-pine-800 font-medium') + '">' +
           'Study Destinations' +
           '<svg id="nav-dd-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>' +
         '</button>' +
-        '<div id="nav-dd-panel" class="hidden absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[420px] bg-white rounded-2xl shadow-xl shadow-pine-950/10 ring-1 ring-pine-950/5 p-3 grid grid-cols-2 gap-1">' +
-          destinations.map(function (d) {
-            var active = d.page === page;
-            return '<a href="' + d.page + '" class="group flex items-start gap-3 rounded-xl px-3 py-3 transition-colors ' + (active ? 'bg-pine-50' : 'hover:bg-pine-50') + '">' +
-              '<span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pine-100 text-pine-700 group-hover:bg-gold-400 group-hover:text-pine-950 transition-colors">' +
-                '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
-              '</span>' +
-              '<span><span class="block text-sm font-semibold text-pine-950">' + d.name + '</span>' +
-              '<span class="block text-xs text-pine-950/55 leading-snug mt-0.5">' + d.universities.length + ' institutions</span></span>' +
-            '</a>';
-          }).join('') +
+        '<div id="nav-dd-panel" class="hidden absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[600px] bg-white rounded-2xl shadow-xl shadow-pine-950/10 ring-1 ring-pine-950/5 overflow-hidden z-50">' +
+          '<div class="p-3 grid grid-cols-3 gap-1">' + megaMenuItems + '</div>' +
+          '<div class="border-t border-pine-950/10 bg-pine-50/50 px-5 py-3 flex items-center justify-between gap-4">' +
+            '<p class="text-xs text-pine-950/50">Not sure where to study? <a href="eligibility.html" class="font-semibold text-pine-800 hover:text-pine-700">Try our eligibility check &rarr;</a></p>' +
+            '<a href="destinations-other.html" class="shrink-0 text-xs font-semibold text-pine-800 hover:text-pine-700">Other Destinations &rarr;</a>' +
+          '</div>' +
         '</div>' +
       '</div>' +
-      '<a href="how-it-works.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('how-it-works.html') + '">How It Works</a>' +
+      '<a href="services.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('services.html') + '">Services</a>' +
+      '<a href="events.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('events.html') + '">Events</a>' +
       '<a href="success-stories.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('success-stories.html') + '">Success Stories</a>' +
-      '<a href="events.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('events.html') + '">Events</a>';
+      '<a href="eligibility.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('eligibility.html') + '">Eligibility Check</a>' +
+      '<a href="contact.html" class="px-3 py-2 text-sm transition-colors ' + linkCls('contact.html') + '">Contact</a>';
 
     var mobileDestLinks = destinations.map(function (d) {
-      return '<a href="' + d.page + '" class="block rounded-lg px-3 py-2.5 text-sm ' + (d.page === page ? 'bg-pine-50 text-pine-800 font-semibold' : 'text-pine-950/70 hover:bg-pine-50') + '">' + d.name + '</a>';
+      var flag = FLAG_EMOJIS[d.slug] || '🌍';
+      return '<a href="' + d.page + '" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ' + (d.page === page ? 'bg-pine-50 text-pine-800 font-semibold' : 'text-pine-950/70 hover:bg-pine-50') + '">' +
+        '<span class="text-lg shrink-0">' + flag + '</span>' +
+        '<span>' + d.name + '</span>' +
+      '</a>';
     }).join('');
-
-    var mobileLinks = links.map(function (l) {
-      return '<a href="' + l.href + '" class="block rounded-lg px-3 py-2.5 text-base ' + (l.href === page ? 'bg-pine-50 text-pine-800 font-semibold' : 'text-pine-950/80 hover:bg-pine-50 font-medium') + '">' + l.label + '</a>';
-    });
 
     el.className = 'sticky top-0 z-50';
     el.innerHTML =
@@ -126,7 +151,7 @@
         '<nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">' +
           '<div class="flex h-18 items-center justify-between py-3">' +
             '<a href="index.html" class="flex items-center shrink-0" aria-label="Rivil International — Home">' +
-              '<img src="' + LOGO_SRC + '" alt="Rivil International Education Consultants" class="h-11 sm:h-12 w-auto">' +
+              '<img src="' + LOGO_SRC + '" alt="Rivil International Education Consultants" loading="eager" class="h-11 sm:h-12 w-auto">' +
             '</a>' +
             '<div class="hidden lg:flex items-center gap-1">' + desktopLinks + '</div>' +
             '<div class="hidden lg:flex items-center gap-3">' +
@@ -141,21 +166,39 @@
           '</div>' +
         '</nav>' +
         '<div id="nav-mobile-panel" class="hidden lg:hidden border-t border-pine-950/10 bg-cream px-4 pb-6 pt-3 max-h-[calc(100vh-5rem)] overflow-y-auto">' +
-          mobileLinks[0] + mobileLinks[1] +
+          '<a href="index.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('index.html') + '">Home</a>' +
+          '<a href="about.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('about.html') + '">About</a>' +
           '<button id="nav-mobile-dd-btn" type="button" aria-expanded="false" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium ' + (onDestPage ? 'text-pine-800 font-semibold' : 'text-pine-950/80') + ' hover:bg-pine-50">' +
             'Study Destinations' +
             '<svg id="nav-mobile-dd-chevron" class="w-5 h-5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>' +
           '</button>' +
-          '<div id="nav-mobile-dd-panel" class="hidden ml-3 border-l-2 border-gold-400/60 pl-2 my-1">' + mobileDestLinks + '</div>' +
-          mobileLinks[2] + mobileLinks[3] + mobileLinks[4] +
+          '<div id="nav-mobile-dd-panel" class="hidden ml-3 border-l-2 border-gold-400/60 pl-2 my-1">' + mobileDestLinks +
+            '<a href="destinations-other.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ' + (page === 'destinations-other.html' ? 'bg-pine-50 text-pine-800 font-semibold' : 'text-pine-950/70 hover:bg-pine-50') + '">' +
+              '<span class="text-lg shrink-0">🌍</span>' +
+              '<span>Other Destinations</span>' +
+            '</a>' +
+          '</div>' +
+          '<a href="services.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('services.html') + '">Services</a>' +
+          '<a href="events.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('events.html') + '">Events</a>' +
+          '<a href="success-stories.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('success-stories.html') + '">Success Stories</a>' +
+          '<a href="eligibility.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('eligibility.html') + '">Eligibility Check</a>' +
+          '<a href="contact.html" class="block rounded-lg px-3 py-2.5 text-base ' + mobileLinkCls('contact.html') + '">Contact</a>' +
           '<a href="contact.html" class="mt-4 flex items-center justify-center gap-2 rounded-full bg-pine-800 px-5 py-3 text-base font-semibold text-white">Free Consultation</a>' +
         '</div>' +
       '</header>';
 
-    /* Desktop dropdown — click-toggled */
+    /* Desktop dropdown — hover-triggered, 200ms close delay to prevent accidental dismissal */
+    var ddWrap = document.getElementById('nav-dd-wrap');
     var ddBtn = document.getElementById('nav-dd-btn');
     var ddPanel = document.getElementById('nav-dd-panel');
     var ddChevron = document.getElementById('nav-dd-chevron');
+    var ddTimer;
+
+    function openDropdown() {
+      ddPanel.classList.remove('hidden');
+      ddBtn.setAttribute('aria-expanded', 'true');
+      ddChevron.classList.add('rotate-180');
+    }
 
     function closeDropdown() {
       ddPanel.classList.add('hidden');
@@ -163,20 +206,26 @@
       ddChevron.classList.remove('rotate-180');
     }
 
+    ddWrap.addEventListener('mouseenter', function () {
+      clearTimeout(ddTimer);
+      openDropdown();
+    });
+
+    ddWrap.addEventListener('mouseleave', function () {
+      clearTimeout(ddTimer);
+      ddTimer = setTimeout(closeDropdown, 200);
+    });
+
+    /* Button click also toggles for keyboard / touch-desktop fallback */
     ddBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       var isOpen = !ddPanel.classList.contains('hidden');
-      if (isOpen) {
-        closeDropdown();
-      } else {
-        ddPanel.classList.remove('hidden');
-        ddBtn.setAttribute('aria-expanded', 'true');
-        ddChevron.classList.add('rotate-180');
-      }
+      if (isOpen) closeDropdown();
+      else openDropdown();
     });
 
     document.addEventListener('click', function (e) {
-      if (!ddPanel.classList.contains('hidden') && !document.getElementById('nav-dd-wrap').contains(e.target)) {
+      if (!ddPanel.classList.contains('hidden') && !ddWrap.contains(e.target)) {
         closeDropdown();
       }
     });
@@ -199,7 +248,7 @@
       mBtn.setAttribute('aria-expanded', String(!isOpen));
     });
 
-    /* Mobile destinations accordion */
+    /* Mobile destinations accordion — click-toggled */
     var mDdBtn = document.getElementById('nav-mobile-dd-btn');
     var mDdPanel = document.getElementById('nav-mobile-dd-panel');
     var mDdChevron = document.getElementById('nav-mobile-dd-chevron');
@@ -235,7 +284,7 @@
           '<div class="grid gap-12 lg:gap-8 md:grid-cols-2 lg:grid-cols-12">' +
 
             '<div class="lg:col-span-4">' +
-              '<img src="' + LOGO_SRC + '" alt="Rivil International Education Consultants" class="h-12 w-auto brightness-0 invert opacity-90">' +
+              '<img src="' + LOGO_SRC + '" alt="Rivil International Education Consultants" loading="lazy" class="h-12 w-auto brightness-0 invert opacity-90">' +
               '<p class="mt-5 text-sm leading-relaxed text-cream/65 max-w-sm">Helping Sri Lankan students gain admission to universities abroad since 2004. Our guidance is completely free — no fees, no commissions, no hidden costs.</p>' +
               '<div class="mt-6 flex items-center gap-2.5">' + socialIcons + '</div>' +
             '</div>' +
@@ -293,6 +342,94 @@
         '<span class="pointer-events-none absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden md:block whitespace-nowrap rounded-full bg-pine-950 px-4 py-2 text-xs font-semibold text-white opacity-0 translate-x-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0">Chat with a counsellor</span>' +
       '</a>';
     document.body.appendChild(wrap);
+
+    /* Tooltip bubble — appears after 8s, auto-dismisses after 5s, clickable */
+    var bubble = document.createElement('a');
+    bubble.href = waLink(msg);
+    bubble.target = '_blank';
+    bubble.rel = 'noopener noreferrer';
+    bubble.className = 'absolute bottom-1 right-full mr-4 w-max max-w-[220px] whitespace-nowrap rounded-xl bg-pine-900 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-pine-950/25 opacity-0 translate-y-1 transition-all duration-300 pointer-events-none';
+    bubble.textContent = '👋 Have a question? Chat with us!';
+    /* Small arrow pointing right toward the button */
+    var arrow = document.createElement('span');
+    arrow.className = 'absolute top-1/2 left-full -translate-y-1/2 -ml-px border-y-[6px] border-l-[7px] border-y-transparent border-l-pine-900';
+    bubble.appendChild(arrow);
+    wrap.appendChild(bubble);
+
+    var hideTimer;
+    function showBubble() {
+      bubble.classList.remove('opacity-0', 'translate-y-1', 'pointer-events-none');
+      hideTimer = setTimeout(hideBubble, 5000);
+    }
+    function hideBubble() {
+      clearTimeout(hideTimer);
+      bubble.classList.add('opacity-0', 'translate-y-1', 'pointer-events-none');
+    }
+    setTimeout(showBubble, 8000);
+  };
+
+  /* ---------- Side pop-up alert ---------- */
+  /* Fixed panel on the right edge, vertically centred. Slides in 3s after load,
+     toggled by a leftward tab, and dismissed permanently for the session via X. */
+
+  window.initSideAlert = function () {
+    var DISMISS_KEY = 'rivil_side_alert_dismissed';
+    var events = (window.RIVIL_DATA && window.RIVIL_DATA.events) || [];
+    var ev = events[0];
+    if (!ev) return;
+
+    var dismissed = false;
+    try { dismissed = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch (e) {}
+    if (dismissed) return;
+
+    var CLOSED = 'translateY(-50%) translateX(100%)';
+    var OPEN = 'translateY(-50%) translateX(0)';
+
+    var panel = document.createElement('div');
+    panel.id = 'side-alert';
+    panel.setAttribute('role', 'complementary');
+    panel.setAttribute('aria-label', 'Upcoming event alert');
+    panel.className = 'fixed right-0 z-40 w-[240px] sm:w-[280px] transition-transform duration-500 ease-out';
+    panel.style.top = '50%';
+    panel.style.transform = CLOSED;
+
+    var registerHref = ev.register_link || '#';
+
+    panel.innerHTML =
+      '<button type="button" id="side-alert-tab" aria-label="Toggle event alert" class="absolute right-full top-1/2 -translate-y-1/2 flex items-center gap-1.5 rounded-l-xl bg-gold-400 px-2.5 py-4 text-pine-950 shadow-lg shadow-pine-950/20 hover:bg-gold-300 transition-colors" style="writing-mode:vertical-rl">' +
+        '<span class="text-base leading-none">🔔</span>' +
+        '<span class="text-[11px] font-bold uppercase tracking-wider rotate-180">Event</span>' +
+      '</button>' +
+      '<div class="relative rounded-l-2xl bg-pine-900 p-5 pr-6 text-cream shadow-xl shadow-pine-950/30 ring-1 ring-white/10">' +
+        '<button type="button" id="side-alert-close" aria-label="Dismiss alert" class="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full text-cream/60 hover:bg-white/10 hover:text-white transition-colors">' +
+          '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
+        '</button>' +
+        '<p class="text-[11px] font-bold uppercase tracking-wider text-gold-400">🔔 Upcoming Event</p>' +
+        '<h3 class="mt-2 font-display text-base font-bold leading-snug text-white">' + ev.title + '</h3>' +
+        '<ul class="mt-3 space-y-2 text-xs text-cream/75">' +
+          '<li class="flex items-start gap-2"><svg class="w-4 h-4 shrink-0 text-gold-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>' + ev.date + '</span></li>' +
+          '<li class="flex items-start gap-2"><svg class="w-4 h-4 shrink-0 text-gold-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>' + ev.location + '</span></li>' +
+        '</ul>' +
+        '<a href="' + registerHref + '" target="_blank" rel="noopener noreferrer" class="mt-4 block w-full rounded-full bg-gold-400 px-4 py-2.5 text-center text-xs font-bold text-pine-950 hover:bg-gold-300 transition-colors">Register Now →</a>' +
+      '</div>';
+
+    document.body.appendChild(panel);
+
+    var isOpen = false;
+    function open() { isOpen = true; panel.style.transform = OPEN; }
+    function close() { isOpen = false; panel.style.transform = CLOSED; }
+
+    document.getElementById('side-alert-tab').addEventListener('click', function () {
+      if (isOpen) close(); else open();
+    });
+
+    document.getElementById('side-alert-close').addEventListener('click', function () {
+      close();
+      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch (e) {}
+    });
+
+    /* Slide in after a short delay on first load */
+    setTimeout(open, 3000);
   };
 
   /* ---------- Animated stats counter ---------- */
@@ -388,6 +525,8 @@
     var dest = getDestination(slug);
     if (!container || !dest) return;
 
+    var logos = (window.RIVIL_DATA && window.RIVIL_DATA.universityLogos) || {};
+
     container.innerHTML = dest.universities.map(function (u, i) {
       var enquiry = 'Hi, I am interested in ' + u.name + ' (' + dest.name + '). Please contact me.';
       var rankingBadge = u.ranking
@@ -398,7 +537,16 @@
         return '<span class="rounded-full bg-pine-50 px-3 py-1 text-xs font-medium text-pine-800 ring-1 ring-pine-950/5">' + p + '</span>';
       }).join('');
 
+      /* Logo placeholder — 120x60 pine-50 box. Initials show through until the
+         real logo (added manually under assets/logos/) loads over them. */
+      var logoSrc = logos[u.name] || '';
+      var logoBox = '<div class="relative mb-5 flex h-[60px] w-[120px] items-center justify-center overflow-hidden rounded-lg bg-pine-50 ring-1 ring-pine-950/5">' +
+        '<span class="select-none text-[11px] font-bold uppercase tracking-wide text-pine-800/55">' + initials(u.name) + '</span>' +
+        '<img src="' + logoSrc + '" alt="' + u.name + ' logo" loading="lazy" class="absolute inset-0 m-auto max-h-[44px] max-w-[104px] bg-pine-50 object-contain" onerror="this.style.display=\'none\'">' +
+      '</div>';
+
       return '<article class="scroll-reveal flex flex-col rounded-2xl bg-white p-6 sm:p-7 shadow-sm shadow-pine-950/5 ring-1 ring-pine-950/5 hover:shadow-lg hover:shadow-pine-950/10 hover:-translate-y-1 transition-all duration-300" style="transition-delay:' + (i % 3) * 80 + 'ms">' +
+        logoBox +
         '<div class="flex items-start justify-between gap-3">' +
           '<div>' +
             '<h3 class="font-display text-xl font-semibold text-pine-950 leading-tight">' + u.name + '</h3>' +
@@ -420,6 +568,80 @@
         '</div>' +
       '</article>';
     }).join('');
+
+    window.initScrollAnimations();
+  };
+
+  /* ---------- Country stat cards ---------- */
+
+  window.renderCountryStats = function (containerId, slug) {
+    var container = document.getElementById(containerId);
+    var stats = (window.RIVIL_DATA.countryStats || {})[slug];
+    if (!container || !stats) return;
+
+    var cards = [
+      { label: 'Population', value: stats.population, icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6-4a3 3 0 11-3-3' },
+      { label: 'Currency', value: stats.currency, icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Avg Tuition', value: stats.avgTuition, icon: 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z' },
+      { label: 'Post-Study Visa', value: stats.postStudyVisa, icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' }
+    ];
+
+    container.innerHTML = cards.map(function (c, i) {
+      return '<div class="scroll-reveal rounded-2xl bg-white p-6 text-center shadow-sm shadow-pine-950/5 ring-1 ring-pine-950/5" style="transition-delay:' + (i % 4) * 70 + 'ms">' +
+        '<span class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-pine-50 text-pine-700">' +
+          '<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="' + c.icon + '"/></svg>' +
+        '</span>' +
+        '<p class="mt-4 font-display text-lg font-semibold leading-snug text-pine-950">' + (c.value || '&mdash;') + '</p>' +
+        '<p class="mt-1 text-xs font-semibold uppercase tracking-wider text-pine-950/50">' + c.label + '</p>' +
+      '</div>';
+    }).join('');
+
+    window.initScrollAnimations();
+  };
+
+  /* ---------- Country map section ---------- */
+
+  window.renderCountryMap = function (containerId, slug) {
+    var container = document.getElementById(containerId);
+    var dest = getDestination(slug);
+    var stats = (window.RIVIL_DATA.countryStats || {})[slug];
+    if (!container || !dest || !stats) return;
+
+    var mapImage = stats.mapImage
+      ? '<img src="' + stats.mapImage + '" alt="Map of ' + dest.name + '" loading="lazy" class="h-full w-full object-cover" onerror="this.style.display=\'none\';this.parentNode.classList.add(\'map-fallback\')">'
+      : '';
+    var mapFallbackCls = stats.mapImage ? '' : ' map-fallback';
+
+    var facts = [
+      { label: 'Capital', value: stats.capital, icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
+      { label: 'Climate', value: stats.climate, icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z' },
+      { label: 'Currency', value: stats.currency, icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Post-Study Visa', value: stats.postStudyVisa, icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' }
+    ];
+
+    var factRows = facts.map(function (f) {
+      return '<li class="flex items-start gap-4 border-b border-pine-950/8 pb-5 last:border-0 last:pb-0">' +
+        '<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pine-800 text-gold-400">' +
+          '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="' + f.icon + '"/></svg>' +
+        '</span>' +
+        '<span>' +
+          '<span class="block text-xs font-semibold uppercase tracking-wider text-pine-950/45">' + f.label + '</span>' +
+          '<span class="mt-0.5 block text-base font-semibold text-pine-950">' + (f.value || '&mdash;') + '</span>' +
+        '</span>' +
+      '</li>';
+    }).join('');
+
+    container.innerHTML =
+      '<div class="grid items-stretch gap-8 lg:grid-cols-2">' +
+        '<div class="scroll-reveal relative min-h-[320px] overflow-hidden rounded-3xl bg-pine-100' + mapFallbackCls + '">' + mapImage +
+          '<span class="map-fallback-label pointer-events-none absolute inset-0 hidden items-center justify-center text-sm font-semibold text-pine-800/60">Map coming soon</span>' +
+        '</div>' +
+        '<div class="scroll-reveal flex flex-col justify-center">' +
+          '<p class="text-sm font-bold uppercase tracking-[0.2em] text-gold-600">Country at a glance</p>' +
+          '<h2 class="mt-3 font-display text-3xl sm:text-4xl font-semibold leading-tight">Key facts about ' + dest.name + '</h2>' +
+          '<ul class="mt-8 space-y-5">' + factRows + '</ul>' +
+        '</div>' +
+      '</div>';
 
     window.initScrollAnimations();
   };
@@ -452,38 +674,118 @@
 
   /* ---------- Event cards ---------- */
 
-  window.renderEventCards = function (containerId) {
+  window.renderEventCards = function (containerId, filter) {
     var container = document.getElementById(containerId);
     if (!container) return;
 
-    var events = window.RIVIL_DATA.events;
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    if (!events.length) {
-      container.innerHTML = '<p class="text-center text-pine-950/60 col-span-full">No upcoming events at the moment. Follow us on social media for announcements.</p>';
+    function parseEventDate(dateStr) {
+      var cleaned = dateStr
+        .replace(/(\d+)(st|nd|rd|th)/gi, '$1')
+        .replace(/^[A-Za-z]+,\s*/, '');
+      return new Date(cleaned);
+    }
+
+    function destSlugFromName(name) {
+      var list = (window.RIVIL_DATA && window.RIVIL_DATA.destinations) || [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === name) return list[i].slug;
+      }
+      return name.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function buildCalendarUrl(ev) {
+      var date = parseEventDate(ev.date);
+      if (isNaN(date.getTime())) return '#';
+
+      var timeParts = ev.time.split(/\s+to\s+/i);
+
+      function parseTimePart(str) {
+        var m = (str || '').trim().match(/^(\d+)(?::(\d+))?\s*(am|pm)$/i);
+        if (!m) return null;
+        var h = parseInt(m[1], 10), min = parseInt(m[2] || '0', 10);
+        if (/pm/i.test(m[3]) && h !== 12) h += 12;
+        if (/am/i.test(m[3]) && h === 12) h = 0;
+        return { h: h, min: min };
+      }
+
+      var st = parseTimePart(timeParts[0]);
+      var et = parseTimePart(timeParts[1]);
+      if (!st || !et) return '#';
+
+      function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+      function fmtDT(d, t) {
+        return d.getFullYear() + '' + pad2(d.getMonth() + 1) + '' + pad2(d.getDate()) +
+          'T' + pad2(t.h) + '' + pad2(t.min) + '00';
+      }
+
+      return 'https://www.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(ev.title) +
+        '&dates=' + fmtDT(date, st) + '/' + fmtDT(date, et) +
+        '&details=' + encodeURIComponent('Rivil International — ' + ev.title) +
+        '&location=' + encodeURIComponent(ev.location);
+    }
+
+    var events = window.RIVIL_DATA.events;
+    var filtered;
+
+    if (filter === 'upcoming') {
+      filtered = events.filter(function (ev) { return parseEventDate(ev.date) >= today; });
+      filtered.sort(function (a, b) { return parseEventDate(a.date) - parseEventDate(b.date); });
+    } else if (filter === 'past') {
+      filtered = events.filter(function (ev) { return parseEventDate(ev.date) < today; });
+      filtered.sort(function (a, b) { return parseEventDate(b.date) - parseEventDate(a.date); });
+    } else {
+      filtered = events;
+    }
+
+    if (!filtered.length) {
+      var emptyMsg = filter === 'past'
+        ? 'No past events to show.'
+        : 'No upcoming events at the moment. Follow us on social media for announcements.';
+      container.innerHTML = '<p class="text-center text-pine-950/60 col-span-full py-8">' + emptyMsg + '</p>';
       return;
     }
 
-    container.innerHTML = events.map(function (ev, i) {
+    container.innerHTML = filtered.map(function (ev, i) {
+      var slug = destSlugFromName(ev.destination);
+      var isPast = parseEventDate(ev.date) < today;
+      var imgSrc = DEST_IMAGES[slug] || '';
+      var flag = FLAG_EMOJIS[slug] || '🌍';
+      var calUrl = buildCalendarUrl(ev);
+
+      var badgeText = isPast ? 'PAST EVENT' : 'UPCOMING EVENT';
+      var badgeCls = isPast ? 'bg-pine-950/70 text-white' : 'bg-gold-400 text-pine-950';
+      var imgCls = isPast ? ' grayscale' : '';
+
+      var ctaHtml = isPast
+        ? '<a href="#" class="block w-full text-center rounded-full border-2 border-pine-800 px-6 py-3 text-sm font-semibold text-pine-800 hover:bg-pine-800 hover:text-white transition-colors">View Summary</a>'
+        : '<a href="' + (ev.register_link || '#') + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center rounded-full bg-pine-800 px-6 py-3 text-sm font-semibold text-white hover:bg-pine-700 transition-colors">Register Now →</a>' +
+          '<a href="' + calUrl + '" target="_blank" rel="noopener noreferrer" class="mt-3 block text-center text-sm font-medium text-pine-700 hover:text-pine-500 hover:underline underline-offset-2 transition-colors">Add to Calendar</a>';
+
       return '<article class="scroll-reveal flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm shadow-pine-950/5 ring-1 ring-pine-950/5 hover:shadow-lg hover:shadow-pine-950/10 transition-shadow duration-300" style="transition-delay:' + (i % 2) * 100 + 'ms">' +
-        '<div class="flex items-center justify-between gap-3 bg-pine-900 px-6 sm:px-7 py-4">' +
-          '<span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gold-400">' +
-            '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' +
-            'Upcoming Event</span>' +
-          '<span class="rounded-full bg-gold-400 px-3 py-1 text-xs font-bold text-pine-950">' + ev.destination + '</span>' +
+
+        '<div class="relative aspect-[16/9] overflow-hidden">' +
+          '<img src="' + imgSrc + '" alt="Study in ' + ev.destination + '" loading="lazy" class="h-full w-full object-cover transition-transform duration-700' + imgCls + '">' +
+          '<div class="absolute inset-0 bg-gradient-to-t from-pine-950/40 to-transparent"></div>' +
+          '<span class="absolute top-4 left-4 rounded-full ' + badgeCls + ' px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider">' + badgeText + '</span>' +
         '</div>' +
+
         '<div class="flex flex-1 flex-col p-6 sm:p-7">' +
-          '<h3 class="font-display text-xl sm:text-2xl font-semibold text-pine-950 leading-snug">' + ev.title + '</h3>' +
-          '<ul class="mt-5 space-y-2.5 text-sm text-pine-950/70">' +
-            '<li class="flex items-center gap-3"><svg class="w-4.5 h-4.5 w-[18px] h-[18px] shrink-0 text-pine-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' + ev.date + '</li>' +
+          '<p class="flex items-center gap-2 text-sm font-medium text-pine-950/55">' +
+            '<span class="text-base">' + flag + '</span>' + ev.destination +
+          '</p>' +
+          '<h3 class="mt-2 font-display text-xl sm:text-[1.4rem] font-bold text-pine-950 leading-snug">' + ev.title + '</h3>' +
+          '<ul class="mt-4 space-y-2.5 text-sm text-pine-950/70">' +
+            '<li class="flex items-center gap-3"><svg class="w-[18px] h-[18px] shrink-0 text-pine-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' + ev.date + '</li>' +
             '<li class="flex items-center gap-3"><svg class="w-[18px] h-[18px] shrink-0 text-pine-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' + ev.time + '</li>' +
             '<li class="flex items-center gap-3"><svg class="w-[18px] h-[18px] shrink-0 text-pine-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' + ev.location + '</li>' +
           '</ul>' +
-          '<div class="mt-auto pt-6">' +
-            '<a href="' + ev.register_link + '" target="_blank" rel="noopener noreferrer" class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-pine-950 hover:bg-gold-500 transition-colors">Register Now' +
-              '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>' +
-            '</a>' +
-          '</div>' +
+          '<div class="mt-auto pt-6">' + ctaHtml + '</div>' +
         '</div>' +
+
       '</article>';
     }).join('');
 
@@ -508,13 +810,17 @@
     set('dest-overview', dest.overview);
     set('dest-name-inline', dest.name);
     set('dest-name-inline-2', dest.name);
+    set('dest-flag', FLAG_EMOJIS[dest.slug] || '🌍');
     set('uni-count', dest.universities.length);
 
     var heroImg = document.getElementById('dest-hero-img');
     if (heroImg) {
-      heroImg.src = DEST_IMAGES[dest.slug].replace('w=800', 'w=1600');
-      heroImg.alt = 'Study in ' + dest.name;
+      heroImg.src = HERO_IMAGES[dest.slug] || DEST_IMAGES[dest.slug];
+      heroImg.alt = dest.name + ' landscape';
     }
+
+    renderCountryStats('stats-grid', dest.slug);
+    renderCountryMap('country-map', dest.slug);
 
     /* Why study grid */
     var whyIcons = [

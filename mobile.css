@@ -52,6 +52,43 @@
   animation: hero-drift 18s ease-out both;
 }
 
+/* ---------- Hero crossfade slider ---------- */
+
+.hero-slide {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-slide.is-active {
+  opacity: 0.45;
+}
+
+/* ---------- University logo marquee ---------- */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+
+.marquee-row-2 .marquee-track {
+  animation-direction: reverse;
+  animation-duration: 55s;
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Hide the horizontal scrollbar on the social feed scroller */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* ---------- Decorative underline stroke for headline accents ---------- */
 
 .accent-underline {
@@ -90,9 +127,12 @@ html {
   .hero-rise-2,
   .hero-rise-3,
   .hero-rise-4,
-  .hero-drift {
+  .hero-drift,
+  .marquee-track {
     animation: none;
   }
+
+  .hero-slide { transition: none; }
 
   .hero-rise { opacity: 1; transform: none; }
 }
@@ -104,4 +144,10 @@ html {
   .fixed.bottom-5 {
     bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
   }
+}
+
+/* ---------- Destination country-map fallback ---------- */
+/* When a map image is missing or fails to load, reveal the placeholder label. */
+.map-fallback .map-fallback-label {
+  display: flex;
 }

@@ -182,5 +182,191 @@ window.RIVIL_DATA = {
       destination: "Australia",
       quote: "Rivil International's guidance was invaluable. They handled all the paperwork and kept me informed throughout. I am grateful for their support in making my dream a reality."
     }
-  ]
+  ],
+
+  videoTestimonials: [
+    {
+      name: "Student Name",
+      university: "University of Auckland",
+      destination: "New Zealand",
+      thumbnailUrl: "assets/testimonials/video-1.jpg",
+      videoUrl: "https://www.youtube.com/watch?v=PLACEHOLDER",
+      platform: "youtube"
+    },
+    {
+      name: "Student Name 2",
+      university: "Coventry University",
+      destination: "United Kingdom",
+      thumbnailUrl: "assets/testimonials/video-2.jpg",
+      videoUrl: "https://www.instagram.com/p/PLACEHOLDER",
+      platform: "instagram"
+    },
+    {
+      name: "Student Name 3",
+      university: "University of Tasmania",
+      destination: "Australia",
+      thumbnailUrl: "assets/testimonials/video-3.jpg",
+      videoUrl: "https://www.youtube.com/watch?v=PLACEHOLDER",
+      platform: "youtube"
+    },
+    {
+      name: "Student Name 4",
+      university: "Humber College",
+      destination: "Canada",
+      thumbnailUrl: "assets/testimonials/video-4.jpg",
+      videoUrl: "https://www.instagram.com/p/PLACEHOLDER",
+      platform: "instagram"
+    }
+  ],
+
+  universityLogos: {
+    "University of Auckland": "assets/logos/university-of-auckland.png",
+    "AUT University": "assets/logos/aut-university.png",
+    "Victoria University of Wellington": "assets/logos/victoria-university-of-wellington.png",
+    "University of Otago": "assets/logos/university-of-otago.png",
+    "Lincoln University": "assets/logos/lincoln-university.png",
+    "Unitec Institute of Technology": "assets/logos/unitec-institute-of-technology.png",
+    "Massey University": "assets/logos/massey-university.png",
+    "Oxford Brookes University": "assets/logos/oxford-brookes-university.png",
+    "University of Greenwich": "assets/logos/university-of-greenwich.png",
+    "Coventry University": "assets/logos/coventry-university.png",
+    "Birmingham City University": "assets/logos/birmingham-city-university.png",
+    "Leeds Beckett University": "assets/logos/leeds-beckett-university.png",
+    "Middlesex University": "assets/logos/middlesex-university.png",
+    "University of Brighton": "assets/logos/university-of-brighton.png",
+    "University of Exeter": "assets/logos/university-of-exeter.png",
+    "University of Surrey": "assets/logos/university-of-surrey.png",
+    "University of York": "assets/logos/university-of-york.png",
+    "Central Queensland University": "assets/logos/central-queensland-university.png",
+    "University of Tasmania": "assets/logos/university-of-tasmania.png",
+    "Charles Darwin University": "assets/logos/charles-darwin-university.png",
+    "Federation University": "assets/logos/federation-university.png",
+    "Torrens University": "assets/logos/torrens-university.png",
+    "James Cook University": "assets/logos/james-cook-university.png",
+    "Southern Cross University": "assets/logos/southern-cross-university.png",
+    "Lambton College": "assets/logos/lambton-college.png",
+    "Conestoga College": "assets/logos/conestoga-college.png",
+    "Centennial College": "assets/logos/centennial-college.png",
+    "Humber College": "assets/logos/humber-college.png",
+    "Seneca College": "assets/logos/seneca-college.png",
+    "Taylor's University": "assets/logos/taylors-university.png",
+    "Sunway University": "assets/logos/sunway-university.png",
+    "INTI International University": "assets/logos/inti-international-university.png",
+    "Manipal International University": "assets/logos/manipal-international-university.png",
+    "Singapore Institute of Management (SIM)": "assets/logos/singapore-institute-of-management.png",
+    "PSB Academy": "assets/logos/psb-academy.png",
+    "Kaplan Singapore": "assets/logos/kaplan-singapore.png"
+  },
+
+  team: [
+    {
+      name: "Director",
+      title: "Founder & Director",
+      message: "For over two decades, our mission has remained unchanged — to give every Sri Lankan student access to the world's best universities, completely free of charge. What started as a small office in Mount Lavinia has grown into Sri Lanka's most trusted overseas education consultancy. We are proud of every student we have helped, and we remain committed to that same mission today.",
+      image: "assets/team/director.jpg"
+    }
+  ],
+
+  accreditations: [
+    { name: "British Council", logo: "assets/accreditations/british-council.png" },
+    { name: "Education New Zealand", logo: "assets/accreditations/enz.png" },
+    { name: "ICEF Certified", logo: "assets/accreditations/icef.png" },
+    { name: "Study Australia", logo: "assets/accreditations/study-australia.png" }
+  ],
+
+  services: [
+    {
+      title: "Student Consultation",
+      icon: "chat",
+      description: "Personalised one-on-one sessions with an experienced counsellor to understand your academic goals, career aspirations, and find the right destination and programme for you.",
+      image: "assets/services/consultation.jpg"
+    },
+    {
+      title: "Admission Support",
+      icon: "edit_note",
+      description: "Complete guidance through the university application process — from shortlisting institutions to preparing documents, writing personal statements, and submitting applications.",
+      image: "assets/services/admission.jpg"
+    },
+    {
+      title: "Visa Guidance",
+      icon: "verified",
+      description: "Step-by-step support with student visa applications for all six destinations, including document checklists, application reviews, and mock interview preparation.",
+      image: "assets/services/visa.jpg"
+    },
+    {
+      title: "IELTS Preparation",
+      icon: "school",
+      description: "Guidance on IELTS preparation resources, recommended study materials, and advice on meeting the English language requirements for your chosen institution.",
+      image: "assets/services/ielts.jpg"
+    },
+    {
+      title: "Accommodation Support",
+      icon: "home",
+      description: "Advice on finding suitable student accommodation — whether on-campus halls of residence or private rentals — tailored to your destination and budget.",
+      image: "assets/services/accommodation.jpg"
+    },
+    {
+      title: "Pre-Departure Briefing",
+      icon: "flight_takeoff",
+      description: "A comprehensive pre-departure session covering what to expect on arrival, banking, transport, cultural adjustment, and connecting with the Sri Lankan student community abroad.",
+      image: "assets/services/departure.jpg"
+    }
+  ],
+
+  countryStats: {
+    "new-zealand": {
+      population: "5.1 Million",
+      currency: "NZD (1 NZD ≈ LKR 185)",
+      avgTuition: "NZD 22,000 – 35,000 / year",
+      postStudyVisa: "Up to 3 years",
+      capital: "Wellington",
+      climate: "Temperate",
+      mapImage: "assets/maps/new-zealand-map.png"
+    },
+    "australia": {
+      population: "26 Million",
+      currency: "AUD (1 AUD ≈ LKR 175)",
+      avgTuition: "AUD 20,000 – 45,000 / year",
+      postStudyVisa: "Up to 4 years",
+      capital: "Canberra",
+      climate: "Varied",
+      mapImage: "assets/maps/australia-map.png"
+    },
+    "uk": {
+      population: "67 Million",
+      currency: "GBP (1 GBP ≈ LKR 320)",
+      avgTuition: "GBP 12,000 – 26,000 / year",
+      postStudyVisa: "2 years (Graduate Route)",
+      capital: "London",
+      climate: "Temperate oceanic",
+      mapImage: "assets/maps/uk-map.png"
+    },
+    "canada": {
+      population: "38 Million",
+      currency: "CAD (1 CAD ≈ LKR 165)",
+      avgTuition: "CAD 15,000 – 30,000 / year",
+      postStudyVisa: "Up to 3 years (PGWP)",
+      capital: "Ottawa",
+      climate: "Varied",
+      mapImage: "assets/maps/canada-map.png"
+    },
+    "malaysia": {
+      population: "33 Million",
+      currency: "MYR (1 MYR ≈ LKR 50)",
+      avgTuition: "MYR 20,000 – 50,000 / year",
+      postStudyVisa: "N/A",
+      capital: "Kuala Lumpur",
+      climate: "Tropical",
+      mapImage: "assets/maps/malaysia-map.png"
+    },
+    "singapore": {
+      population: "5.9 Million",
+      currency: "SGD (1 SGD ≈ LKR 170)",
+      avgTuition: "SGD 15,000 – 40,000 / year",
+      postStudyVisa: "N/A",
+      capital: "Singapore",
+      climate: "Tropical",
+      mapImage: "assets/maps/singapore-map.png"
+    }
+  }
 };
