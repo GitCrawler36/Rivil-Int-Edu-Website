@@ -113,59 +113,6 @@
     </div>
   </section>
 
-  <!-- ============ 2. University network ============ -->
-  <section class="bg-pine-950 py-20 sm:py-28 overflow-hidden">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-      <!-- Section header -->
-      <div class="text-center">
-        <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-gold-400">
-          Our University Network
-        </p>
-        <h2 class="mt-4 font-display text-3xl sm:text-5xl font-semibold text-white leading-tight">
-          Across six countries.<br>
-          <span class="text-gold-300">Across hundreds of futures.</span>
-        </h2>
-        <p class="mt-5 mx-auto max-w-2xl text-base sm:text-lg text-cream/55 leading-relaxed">
-          We have spent 21 years building relationships with recognised universities,
-          colleges, and institutes across the world &mdash; so that when you are ready,
-          the right door is already open.
-        </p>
-      </div>
-
-      <!-- Destination tabs with university count -->
-      <div class="mt-12 flex flex-wrap justify-center gap-3" id="uni-network-tabs">
-        <!-- Render tabs from JS -->
-      </div>
-
-      <!-- University name grid -->
-      <div class="mt-10 relative">
-        <div id="uni-network-grid"
-             class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-
-      <!-- Bottom CTA row -->
-      <div class="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <p class="text-cream/50 text-sm">
-          Not sure which university is right for you?
-        </p>
-        <a href="contact.html"
-           class="inline-flex items-center gap-2 rounded-full bg-gold-400 px-7 py-3
-                  text-sm font-bold text-pine-950 hover:bg-gold-300 transition-colors">
-          Talk to a Counsellor
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-               viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </a>
-      </div>
-
-    </div>
-  </section>
-
   <!-- ============ 3. Study Destinations (carousel) ============ -->
   <section id="destinations" class="py-20 sm:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -374,113 +321,6 @@
           }
         }, { passive: true });
       }
-    }
-
-    /* ---------- University network tabs ---------- */
-    function initUniversityNetwork() {
-      var tabsWrap = document.getElementById('uni-network-tabs');
-      var grid = document.getElementById('uni-network-grid');
-      var data = window.RIVIL_DATA && window.RIVIL_DATA.destinations;
-      if (!tabsWrap || !grid || !data) return;
-
-      var tabOrder = ['new-zealand', 'uk', 'australia', 'canada', 'malaysia', 'singapore'];
-      var flags = {
-        'new-zealand': '🇳🇿',
-        uk: '🇬🇧',
-        australia: '🇦🇺',
-        canada: '🇨🇦',
-        malaysia: '🇲🇾',
-        singapore: '🇸🇬'
-      };
-      var destinations = tabOrder.map(function (slug) {
-        return data.find(function (d) { return d.slug === slug; });
-      }).filter(Boolean);
-      var activeSlug = 'new-zealand';
-      var renderToken = 0;
-
-      function escapeHtml(value) {
-        return String(value).replace(/[&<>"']/g, function (char) {
-          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
-        });
-      }
-
-      function tabClass(active) {
-        return 'rounded-full px-5 py-2.5 text-sm flex items-center gap-2 border ' +
-          (active
-            ? 'bg-gold-400 text-pine-950 border-gold-400 font-bold'
-            : 'bg-white/8 border-white/10 text-cream/60 font-medium hover:bg-white/12 hover:text-cream/80');
-      }
-
-      function renderTabs() {
-        tabsWrap.innerHTML = destinations.map(function (destination) {
-          var active = destination.slug === activeSlug;
-          return '<button type="button" data-slug="' + escapeHtml(destination.slug) + '" aria-pressed="' + active + '" class="' + tabClass(active) + '" style="transition: all 0.2s ease;">' +
-            '<span>' + flags[destination.slug] + '</span>' +
-            '<span>' + escapeHtml(destination.name) + '</span>' +
-            '<span class="rounded-full px-2 py-0.5 text-xs ' + (active ? 'bg-pine-950/20' : 'bg-white/20') + '">' + destination.universities.length + '</span>' +
-          '</button>';
-        }).join('');
-
-        Array.prototype.slice.call(tabsWrap.querySelectorAll('button')).forEach(function (button) {
-          button.addEventListener('click', function () {
-            var slug = button.getAttribute('data-slug');
-            if (slug && slug !== activeSlug) {
-              activeSlug = slug;
-              renderTabs();
-              renderUniversities(slug, true);
-            }
-          });
-        });
-      }
-
-      function universityCard(university, destination, index) {
-        var name = escapeHtml(university.name);
-        return '<div class="group relative min-h-[112px] rounded-2xl bg-white/5 border border-white/8 px-5 py-4 hover:bg-white/10 hover:border-white/15" style="opacity:0;transform:translateY(8px);transition: opacity 300ms ease, transform 300ms ease, background-color 0.2s ease, border-color 0.2s ease;transition-delay:' + (index * 40) + 'ms;">' +
-          '<span class="absolute right-4 top-4 text-xs opacity-40">' + flags[destination.slug] + '</span>' +
-          '<p class="pr-8 font-sans text-sm font-medium text-cream/80 group-hover:text-white transition-colors duration-200">' + name + '</p>' +
-          '<a href="' + escapeHtml(destination.page) + '" class="mt-4 inline-flex translate-y-1 text-xs font-semibold text-gold-400 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100" aria-label="View universities in ' + escapeHtml(destination.name) + '">View universities &rarr;</a>' +
-        '</div>';
-      }
-
-      function renderCards(destination) {
-        grid.innerHTML = destination.universities.map(function (university, index) {
-          return universityCard(university, destination, index);
-        }).join('');
-
-        requestAnimationFrame(function () {
-          Array.prototype.slice.call(grid.children).forEach(function (card) {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
-        });
-      }
-
-      function renderUniversities(slug, animateOut) {
-        var destination = destinations.find(function (d) { return d.slug === slug; });
-        if (!destination) return;
-        renderToken += 1;
-        var token = renderToken;
-        var cards = Array.prototype.slice.call(grid.children);
-
-        if (animateOut && cards.length) {
-          cards.forEach(function (card) {
-            card.style.transition = 'opacity 200ms ease, transform 200ms ease';
-            card.style.transitionDelay = '0ms';
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(-8px)';
-          });
-
-          window.setTimeout(function () {
-            if (token === renderToken) renderCards(destination);
-          }, 200);
-          return;
-        }
-
-        renderCards(destination);
-      }
-
-      renderTabs();
-      renderUniversities(activeSlug, false);
     }
 
     /* ---------- Generic carousel ---------- */
@@ -700,7 +540,6 @@
       initSideAlert();
 
       initHeroSlider();
-      initUniversityNetwork();
 
       renderDestinationCards('destination-cards');
       enhanceDestinationCards();
